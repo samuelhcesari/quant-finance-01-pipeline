@@ -2,11 +2,8 @@
 fichier data/processed/market_prices.csv (ticker, price_date, close_price,
 volume).
 
-shares_outstanding et market_cap ne sont volontairement PAS calculés ici :
-yfinance ne fournit qu'un nombre d'actions en circulation actuel (snapshot),
-pas un historique quotidien fiable. Les multiplier par le prix historique
-produirait une capitalisation approximative non documentable précisément par
-date -> laissé NULL, limitation explicite (docs/data_sources.md).
+shares_outstanding et market_cap restent NULL : yfinance ne fournit qu'un
+nombre d'actions actuel (snapshot), pas un historique quotidien fiable.
 
 Usage : python -m financial_intelligence.data.normalize_yahoo
 """

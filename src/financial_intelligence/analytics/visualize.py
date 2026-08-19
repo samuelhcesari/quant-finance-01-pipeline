@@ -1,15 +1,9 @@
-"""Génère les visualisations des résultats déjà calculés par le pipeline —
-aucune nouvelle logique financière ici, uniquement de la lecture des vues SQL
-existantes (v_screening_base, screening_results) et du rendu matplotlib.
+"""Génère les 4 figures de résultats (funnel de screening, distributions de
+valorisation, comparaison sectorielle, heatmap de corrélation) à partir des
+vues SQL existantes (v_screening_base, screening_results).
 
-Les 4 figures répondent à des questions que les tableaux markdown du README
-et de reports/research_report.md laissent difficiles à voir d'un coup d'œil :
-combien d'entreprises passent chaque profil de screening, comment se
-distribuent les multiples de valorisation, comment les secteurs se comparent
-sur les métriques clés, et comment ces métriques sont corrélées entre elles.
-
-Sorties : results/figures/*.png (commitées volontairement, cf. .gitignore,
-pour être visibles directement sur GitHub sans exécuter le pipeline).
+Sorties : results/figures/*.png, commitées pour être visibles sur GitHub sans
+exécuter le pipeline.
 
 Usage : python -m financial_intelligence.analytics.visualize
 """

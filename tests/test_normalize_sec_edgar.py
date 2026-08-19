@@ -1,8 +1,7 @@
-"""Tests unitaires du normalizer SEC EDGAR (charte section 10 : "parsing des
-données brutes... cas limites"). Fixtures JSON synthétiques minimales,
+"""Tests unitaires du normalizer SEC EDGAR. Fixtures JSON synthétiques minimales,
 reproduisant la forme réelle de l'API Company Facts — pas d'appel réseau.
-Chaque cas reproduit un bug réel trouvé et corrigé pendant le chargement
-(docs/data_sources.md section 6), pour empêcher une régression silencieuse.
+Chaque cas reproduit un bug réel rencontré pendant le chargement (cf.
+docs/data_sources.md).
 """
 
 from __future__ import annotations

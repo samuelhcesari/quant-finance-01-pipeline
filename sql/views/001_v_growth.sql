@@ -1,18 +1,7 @@
--- v_growth — croissance annuelle (docs/00_project_charter.md, section 5) :
--- growth_t = (X_t / X_{t-1}) - 1 pour Revenue, EBITDA, EPS (dilué), FCF.
---
--- Dénominateurs négatifs traités explicitement (pas ignorés, cf. charte) : la
--- croissance n'est PAS calculée (NULL) quand la valeur de l'exercice précédent
--- est négative ou nulle, car un pourcentage de croissance calculé sur une base
--- négative est trompeur (ex. perte -100 -> bénéfice +50 donnerait -150%, ce qui
--- ne veut rien dire économiquement). Un flag *_prior_negative expose ce cas
--- explicitement plutôt que de le masquer silencieusement. La valeur brute de
--- l'exercice précédent reste visible dans tous les cas pour inspection.
---
--- Alignement sur des exercices réellement consécutifs : LAG() est calculé sur
--- l'ordre des fiscal_year, mais la croissance n'est retenue que si l'exercice
--- précédent est exactement fiscal_year - 1 (pas de comparaison entre deux
--- exercices séparés par un trou de données).
+-- v_growth — growth_t = (X_t / X_{t-1}) - 1 pour Revenue, EBITDA, EPS, FCF.
+-- NULL si la valeur précédente est <= 0 (base négative -> % trompeur) ; flag
+-- *_prior_negative pour ces cas. LAG() retenu seulement entre exercices
+-- vraiment consécutifs (fiscal_year_prior = fiscal_year - 1).
 
 CREATE VIEW v_growth AS
 WITH base AS (

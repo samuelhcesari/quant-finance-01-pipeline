@@ -1,11 +1,7 @@
-"""Fixtures pytest pour une base PostgreSQL éphémère (docs/00_project_charter.
-md, section 10 : "Base de test : PostgreSQL éphémère..., recréée à chaque
-run"). Le schéma complet (tables + vues + vue matérialisée) est reconstruit
-une fois par session de test via le runner Python
-(financial_intelligence.utils.schema_runner, section 4 de la charte), sur une
-base dédiée `financial_intelligence_test` — jamais sur la base de
-développement. Chaque test s'exécute dans sa propre transaction, annulée
-(ROLLBACK) à la fin : aucun test ne peut laisser de données pour le suivant.
+"""Fixtures pytest pour une base PostgreSQL éphémère `financial_intelligence_test`
+(jamais la base de développement). Schéma reconstruit une fois par session via
+schema_runner. Chaque test tourne dans sa propre transaction, annulée
+(ROLLBACK) à la fin.
 """
 
 from __future__ import annotations

@@ -1,12 +1,8 @@
-"""Test bout-en-bout du moteur de screening (charte section 10 : "vérifier
-qu'un enregistrement synthétique conçu pour passer/échouer un profil donné
-produit bien le résultat attendu"). Deux entreprises fictives sur 3 exercices
-consécutifs (nécessaire pour ebitda_margin_3y_avg/revenue_growth_3y_avg du
-profil "quality") : GoodCo conçue pour satisfaire toutes les règles, BadCo
-pour toutes les échouer. Passe par la vraie pile : insertion SQL ->
-v_screening_base -> configs/screening/quality.yaml -> evaluate_profile
-(le même code que le moteur de production, financial_intelligence.analytics.
-screening_engine), pas une réimplémentation simplifiée dans le test.
+"""Test bout-en-bout du moteur de screening. Deux entreprises fictives sur
+3 exercices consécutifs (requis pour ebitda_margin_3y_avg/revenue_growth_3y_avg
+du profil "quality") : GoodCo satisfait toutes les règles, BadCo aucune.
+Passe par la vraie pile : insertion SQL -> v_screening_base ->
+configs/screening/quality.yaml -> evaluate_profile.
 """
 
 from __future__ import annotations

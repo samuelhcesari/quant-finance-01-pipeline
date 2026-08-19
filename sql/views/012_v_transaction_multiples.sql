@@ -1,14 +1,6 @@
--- v_transaction_multiples — multiples payés lors des transactions M&A (docs/
--- 00_project_charter.md, section 5 : EV/EBITDA, EV/Revenue) — calculés à
--- partir de transaction_financials, alimenté quand les états financiers de la
--- cible ont pu être extraits (cf. docs/data_sources.md : Splunk et Lhoist
--- North America n'ont pas de transaction_financials chargé — LEFT JOIN
--- volontaire pour que la transaction reste visible même sans multiple calculable).
---
--- ev_to_revenue calculé ici (pas stocké dans transaction_financials) car
--- dérivable directement de deux faits bruts déjà présents (ev_at_offer,
--- target_revenue_ttm) — même principe que les vues de ratios de l'étape 4 :
--- pas de colonne stockée pour une valeur recalculable.
+-- v_transaction_multiples — EV/EBITDA, EV/Revenue depuis transaction_financials.
+-- LEFT JOIN : Splunk et Lhoist North America n'ont pas de financials chargés.
+-- ev_to_revenue calculé ici, pas stocké (dérivable de ev_at_offer/target_revenue_ttm).
 
 CREATE VIEW v_transaction_multiples AS
 SELECT

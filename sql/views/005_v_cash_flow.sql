@@ -1,11 +1,6 @@
--- v_cash_flow — génération de cash (docs/00_project_charter.md, section 5) :
--- FCF = CFO - CapEx, FCF margin = FCF / Revenue, FCF conversion = FCF / EBITDA.
---
--- capex est stocké tel que rapporté par SEC EDGAR sous le tag
--- PaymentsToAcquirePropertyPlantAndEquipment, qui est une sortie de cash
--- reportée en valeur POSITIVE dans XBRL (contrairement à certains tableaux de
--- flux de trésorerie qui l'affichent en négatif) -> FCF = CFO - CapEx est donc
--- correct tel quel, pas CFO + CapEx.
+-- v_cash_flow — FCF = CFO - CapEx, FCF margin, FCF conversion = FCF / EBITDA.
+-- capex vient du tag XBRL PaymentsToAcquirePropertyPlantAndEquipment, reporté
+-- en valeur positive -> CFO - CapEx, pas CFO + CapEx.
 
 CREATE VIEW v_cash_flow AS
 SELECT

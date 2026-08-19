@@ -4,8 +4,7 @@ Les filers SEC ne taguent pas tous la même ligne comptable avec le même concep
 XBRL (ex. le revenu peut être `Revenues`, `RevenueFromContractWithCustomer...`,
 ou `SalesRevenueNet` selon l'entreprise et l'année). Chaque entrée liste les tags
 par ordre de préférence ; le premier tag présent dans le filing est utilisé.
-Aucune valeur n'est inventée : si aucun tag de la liste n'est trouvé, le champ
-reste NULL (cf. docs/data_sources.md, limitation à documenter après chargement).
+Si aucun ne l'est, le champ reste NULL.
 """
 
 from __future__ import annotations

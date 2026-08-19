@@ -59,12 +59,9 @@ def test_accounting_identity_null_when_data_missing(db_conn):
 
 
 def test_extreme_growth_flagged_as_outlier_vs_sector_peers(db_conn):
-    """20 pairs du même secteur avec une croissance identique (+5%), une 21ᵉ
-    à +5000% -> doit être flaguée outlier. Échantillon volontairement large :
-    avec peu de pairs, la valeur extrême gonfle elle-même la moyenne/écart-
-    type du secteur (effet de masquage statistique) et peut passer sous le
-    seuil |z|>3 malgré un écart énorme en apparence — un N plus grand dilue
-    ce biais et rend le test robuste plutôt que dépendant d'un cas limite."""
+    """20 pairs à +5% de croissance, une 21e à +5000% -> doit être flaguée
+    outlier. N=20 plutôt que N=5 : avec trop peu de pairs, l'outlier gonfle
+    lui-même la moyenne/écart-type du secteur et peut repasser sous |z|>3."""
     sector_id = create_sector(db_conn, "Test Sector")
     for i in range(20):
         cid = create_company(db_conn, f"PEER{i}", f"Peer {i}", sector_id)

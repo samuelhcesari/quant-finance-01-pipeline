@@ -1,10 +1,8 @@
 """Fetcher SEC EDGAR — télécharge les Company Facts (XBRL) brutes pour l'univers
 d'entreprises défini dans configs/company_universe.yaml.
 
-Ne fait aucun parsing/normalisation : sauvegarde le JSON brut tel que renvoyé par
-l'API, sans transformation (docs/00_project_charter.md, section 7 — "data/raw/
-(JSON/CSV bruts, jamais modifiés)"). La normalisation vers des lignes tabulaires
-est une étape séparée (étape 3 du roadmap, sql/schema alimenté par des loaders).
+Sauvegarde le JSON brut tel quel, sans transformation. La normalisation vers
+des lignes tabulaires est une étape séparée (normalize_sec_edgar.py).
 
 Usage : python -m financial_intelligence.data.fetch_sec_edgar
 """

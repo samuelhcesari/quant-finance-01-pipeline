@@ -1,8 +1,6 @@
--- 001_init.sql
--- Financial Intelligence & Deal Analytics Platform — schéma initial (12 tables)
--- Justification complète de chaque choix de modélisation : docs/01_data_model.md
--- Toute la logique financière dérivée (ratios, EV, multiples) vit dans des vues
--- (sql/views/), jamais dans des colonnes stockées de ce fichier.
+-- 001_init.sql — schéma initial (12 tables). Justification des choix de
+-- modélisation : docs/01_data_model.md. Les ratios/EV/multiples vivent dans
+-- les vues (sql/views/), pas dans des colonnes stockées ici.
 
 BEGIN;
 

@@ -1,7 +1,5 @@
-"""Tests unitaires du moteur de screening générique (charte section 10 :
-"vérifier qu'un enregistrement synthétique... produit bien le résultat
-attendu"). Teste evaluate_rule/evaluate_profile en isolation, sans base de
-données — la sémantique des règles YAML est une fonction pure.
+"""Tests unitaires d'evaluate_rule/evaluate_profile, en isolation, sans base
+de données — la sémantique des règles YAML est une fonction pure.
 """
 
 from __future__ import annotations
@@ -39,7 +37,7 @@ def test_evaluate_rule_missing_value_allow_null_true_is_satisfied():
 
 def test_evaluate_rule_missing_value_allow_null_false_is_not_satisfied():
     """Donnée manquante traitée comme un échec explicite, pas comme un succès
-    par défaut -> cohérent avec le principe "ne jamais inventer un résultat"."""
+    par défaut."""
     rule = {"metric": "revenue_growth", "operator": ">=", "threshold": 0.15, "allow_null": False}
     assert evaluate_rule(rule, {"revenue_growth": None}) is False
 

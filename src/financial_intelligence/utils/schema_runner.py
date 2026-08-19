@@ -1,15 +1,9 @@
-"""Petit runner Python pour appliquer les scripts SQL versionnés numérotés
-(docs/00_project_charter.md, section 4 : "scripts SQL versionnés numérotés
-(001_, 002_...) appliqués via un petit runner Python").
+"""Applique les scripts SQL versionnés numérotés (sql/schema/, sql/views/,
+sql/optimization/) dans un ordre explicite, pas un glob par dossier : les vues
+008-010 dépendent de mv_company_financial_profile (sql/optimization/001), donc
+l'optimisation doit s'appliquer entre la vue 007 et la vue 008.
 
-L'ordre ci-dessous traverse volontairement sql/schema/, sql/views/ et sql/
-optimization/ : les vues 008-010 utilisent CREATE OR REPLACE VIEW contre
-mv_company_financial_profile, que sql/optimization/001 crée — l'optimisation
-doit donc s'appliquer entre la vue 007 et la vue 008, pas après toutes les
-vues. Un simple glob par dossier appliquerait 008-010 trop tôt et échouerait.
-Cette liste est la source de vérité ; Makefile en maintient une copie pour le
-chemin Docker (`make schema`), volontairement dupliquée plutôt que couplée à
-un interpréteur Python à l'intérieur du conteneur Postgres.
+Liste dupliquée dans le Makefile pour le chemin Docker (`make schema`).
 
 Usage : python -m financial_intelligence.utils.schema_runner [--db-name NAME]
 """

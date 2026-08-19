@@ -1,16 +1,7 @@
--- v_data_quality_flags — couche de qualité de données consolidée, réponse
--- directe à un retour de relecture externe pointant que coverage/missingness/
--- accounting identities/outliers étaient épars dans docs/data_sources.md
--- (texte libre) plutôt qu'interrogeables en SQL.
---
--- Détection d'outliers par z-score INTRA-SECTEUR (AVG/STDDEV en window
--- function, PARTITION BY sector_id) : comparer un ratio à la moyenne globale
--- toutes industries confondues pénaliserait injustement un secteur dont les
--- normes diffèrent structurellement (ex. marge EBITDA pharma vs construction,
--- déjà observé très différent dans sql/queries/001_...sql). Seuil |z| > 3,
--- convention statistique standard pour un outlier "extrême" (pas juste
--- "élevé") — pas un jugement de valeur sur l'entreprise, juste un signal
--- statistique à vérifier avant d'utiliser la ligne dans une analyse agrégée.
+-- v_data_quality_flags — identité comptable + outliers par z-score
+-- INTRA-SECTEUR (AVG/STDDEV en window function, PARTITION BY sector_id),
+-- seuil |z| > 3. Comparaison intra-secteur car les normes de marge/levier
+-- diffèrent structurellement entre secteurs (cf. sql/queries/001_...sql).
 
 CREATE VIEW v_data_quality_flags AS
 WITH stats AS (

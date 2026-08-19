@@ -1,8 +1,4 @@
-"""Helpers d'insertion de données synthétiques pour les tests SQL (charte
-section 10 : "une entreprise fictive avec Revenue, EBITDA, Debt connus").
-Pas de logique métier ici, uniquement de la plomberie d'INSERT réutilisable
-entre fichiers de test.
-"""
+"""Helpers d'insertion de données synthétiques, réutilisés entre fichiers de test."""
 
 from __future__ import annotations
 
@@ -54,7 +50,7 @@ def create_fiscal_year(
     """Insère une période annuelle complète (fiscal_periods + les 3 états
     financiers) pour une entreprise synthétique. Tous les champs financiers
     sont optionnels (NULL par défaut) — chaque test ne renseigne que ce dont
-    il a besoin, conformément au principe "aucune donnée inventée"."""
+    il a besoin."""
     period_end = f"{fiscal_year}-12-31"
     with conn.cursor() as cur:
         cur.execute(

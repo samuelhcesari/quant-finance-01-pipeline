@@ -1,9 +1,5 @@
--- v_company_financial_profile — consolide en une seule ligne (entreprise x
--- exercice) les métriques des 5 vues de ratios (étape 4), via des CTE
--- imbriquées (docs/00_project_charter.md, section 3 : "CTE imbriquées, window
--- functions"). Sert de base commune aux rankings sectoriels (étape 5) et au
--- moteur de screening (étape 6) — évite que chaque vue en aval réécrive ses
--- propres jointures vers les 6 vues de ratios.
+-- v_company_financial_profile — consolide les 5 vues de ratios en une ligne
+-- par entreprise x exercice (CTE). Base commune pour rankings et screening.
 
 CREATE VIEW v_company_financial_profile AS
 WITH g AS (

@@ -1,12 +1,7 @@
--- Répond à une question de recherche posée dans la charte (section 2) et
--- jamais testée jusqu'ici : "les multiples de valorisation varient-ils avec
--- la croissance et la marge (proxy d'un growth-adjusted multiple) ?"
---
--- CORR() est l'agrégat de corrélation de Pearson natif de PostgreSQL — pas de
--- calcul externe, pas de librairie stats. Échantillon limité aux lignes où
--- ev_to_ebitda est disponible (couverture Yahoo Finance ~5 ans, cf.
--- docs/data_sources.md), donc N est rapporté à chaque fois plutôt que
--- présenté comme représentatif de tout l'historique 2009-2026.
+-- Corrélation entre croissance/marge et multiples de valorisation. CORR() est
+-- l'agrégat de corrélation de Pearson natif de PostgreSQL. Échantillon limité
+-- aux lignes où ev_to_ebitda est disponible (~5 ans, couverture Yahoo
+-- Finance) — N rapporté à chaque fois.
 
 -- 1. Corrélation globale, tous secteurs confondus
 SELECT

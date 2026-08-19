@@ -1,13 +1,6 @@
--- v_transaction_premiums — primes de transaction M&A (docs/00_project_
--- charter.md, section 5) : Premium = (Offer Price / Unaffected Price) - 1.
---
--- NULL quand unaffected_price n'est pas documenté pour la transaction (charte
--- section 6 : chaque transaction doit avoir une source vérifiable ; à défaut
--- de prix non-affecté explicitement cité dans le document source, la prime
--- n'est pas calculée plutôt qu'estimée à partir d'une fenêtre arbitraire).
--- Regroupement par secteur de la CIBLE (pas de l'acquéreur) et par année
--- d'annonce, pour permettre l'analyse "par secteur et par cycle" (charte
--- section 2, sous-question sur la dynamique des transactions M&A).
+-- v_transaction_premiums — Premium = Offer Price / Unaffected Price - 1.
+-- NULL si unaffected_price n'est pas documenté pour la transaction.
+-- Secteur = celui de la cible, pas de l'acquéreur.
 
 CREATE VIEW v_transaction_premiums AS
 SELECT

@@ -2,15 +2,12 @@
 tabulaires annuelles (1 ligne = 1 entreprise x 1 exercice fiscal), écrites dans
 data/processed/financials_annual.csv.
 
-Portée assumée pour ce premier chargement : uniquement les dépôts annuels
-(form=10-K, fp=FY) — le détail trimestriel n'est pas chargé à ce stade
-(limitation documentée dans docs/data_sources.md).
+Uniquement les dépôts annuels (form=10-K, fp=FY) — pas de détail trimestriel
+pour l'instant (docs/data_sources.md).
 
-Toute valeur non trouvée dans le filing reste vide (aucune donnée inventée).
-Seules deux valeurs sont recalculées arithmétiquement à partir de faits bruts
-du même filing, jamais estimées : gross_profit = revenue - cogs (si le tag
-GrossProfit est absent) et ebitda = ebit + D&A (EBITDA n'est pas un concept
-US-GAAP standard, il n'existe donc aucun tag XBRL direct à préférer).
+Deux champs sont recalculés depuis d'autres faits du même filing plutôt que
+laissés vides : gross_profit = revenue - cogs si le tag GrossProfit est
+absent, et ebitda = ebit + D&A (EBITDA n'a pas de tag XBRL direct).
 
 Usage : python -m financial_intelligence.data.normalize_sec_edgar
 """
@@ -121,27 +118,13 @@ def extract_annual_rows(facts_json: dict, ticker: str) -> list[dict[str, Any]]:
     cik = facts_json.get("cik")
     entity_name = facts_json.get("entityName")
 
-    # Une période annuelle = une entrée d'un concept ancre "duration"
-    # (NetIncomeLoss, avec repli ProfitLoss) taguée form=10-K/fp=FY ET dont la
-    # durée (end - start) correspond à un exercice complet (~365 jours). Ce
-    # filtre sur la durée est indispensable : certains 10-K contiennent des
-    # données trimestrielles supplémentaires (note "quarterly financial data")
-    # elles aussi taguées form=10-K/fp=FY, avec parfois la même date de fin que
-    # le T4 annuel (ex. BMY 2015 : un NetIncomeLoss "2015-10-01 -> 2015-12-31"
-    # (T4 seul) coexiste avec "2015-01-01 -> 2015-12-31" (exercice complet)
-    # dans le même filing) — sans ce filtre de durée, les deux se confondent.
-    #
-    # Un même exercice apparaît aussi dans plusieurs 10-K différents (année
-    # courante lors de son propre 10-K, puis comparatif dans les 10-K
-    # suivants). On garde le filing le PLUS ANCIEN par date de fin : c'est le
-    # 10-K où cette période était l'exercice courant, donc le seul où le tag
-    # `fy` de SEC EDGAR est fiable (dans un 10-K ultérieur, la période
-    # comparative hérite du `fy` du filing, pas de sa propre année — constaté
-    # sur AAPL : le 10-K FY2025 retague le bilan 2024-09-28 avec fy=2025 alors
-    # que le 10-K FY2024 d'origine le tague correctement fy=2024, avec la même
-    # valeur dans les deux cas). Choix qui a aussi l'avantage d'éviter tout
-    # biais de "look-ahead" via un restatement ultérieur : les chiffres
-    # retenus sont ceux "as originally reported".
+    # Ancre = NetIncomeLoss (repli ProfitLoss), form=10-K/fp=FY, durée ~365j.
+    # Le filtre de durée exclut les données trimestrielles parfois présentes
+    # dans le même filing avec la même date de fin que le T4 (ex. BMY 2015).
+    # Un exercice apparaît dans plusieurs 10-K (courant, puis comparatif dans
+    # les suivants) ; on garde le filing le plus ancien — le tag `fy` d'un
+    # 10-K ultérieur hérite parfois de l'année du filing plutôt que de sa
+    # propre année (ex. AAPL, bilan 2024-09-28 retagué fy=2025).
     by_end: dict[str, dict[str, Any]] = {}
     for anchor_tag in ANCHOR_TAGS:
         anchor = us_gaap.get(anchor_tag)
@@ -166,17 +149,9 @@ def extract_annual_rows(facts_json: dict, ticker: str) -> list[dict[str, Any]]:
         accn, start, end = p["accn"], p["start"], p["end"]
         filed, form = p.get("filed"), p.get("form")
 
-        # fiscal_year dérivé de period_end_date, pas du tag `fy` de SEC EDGAR :
-        # celui-ci s'est révélé peu fiable pour les tableaux "Selected
-        # Financial Data" (5 ans d'historique) des 10-K anciens (~2009-2011),
-        # où plusieurs exercices distincts sont parfois tagués avec le même
-        # `fy` (celui du dépôt). L'année de la date de clôture est déterministe
-        # et vérifiable pour l'ensemble de l'échantillon. Cas particulier des
-        # calendriers fiscaux 52/53 semaines (ex. JNJ) : la clôture tombe
-        # parfois le 1er/2/3 janvier de l'année suivante — dans ce cas
-        # l'exercice appartient à l'année précédente (ex. clôture 2012-01-01 =
-        # exercice 2011), sans quoi elle entrerait en collision avec
-        # l'exercice qui se termine réellement en décembre de cette même année.
+        # fiscal_year = année de period_end_date, pas le tag `fy` (peu fiable
+        # sur les 10-K ~2009-2011). Calendriers 52/53 semaines (ex. JNJ) :
+        # clôture le 1er-3 janvier -> exercice précédent.
         end_month, end_day = int(end[5:7]), int(end[8:10])
         fiscal_year = int(end[:4])
         if end_month == 1 and end_day <= 3:
@@ -250,7 +225,7 @@ def run() -> dict[str, int]:
     if zero:
         print(f"  [ATTENTION] 0 période annuelle extraite pour : {zero}")
 
-    # Taux de remplissage par champ, pour documentation honnête des trous XBRL.
+    # Taux de remplissage par champ (couverture XBRL variable selon le tag).
     fill_fields = [c for c in OUTPUT_COLUMNS if c not in ("ticker", "cik", "entity_name", "fiscal_year", "period_end_date", "filed", "accn", "form")]
     print("\nTaux de remplissage par champ :")
     for field in fill_fields:

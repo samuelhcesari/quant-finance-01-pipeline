@@ -137,11 +137,11 @@ Les résultats du screening sont directionnellement cohérents avec des faits pu
 - **Cohérence comptable imparfaite** : 56 lignes sur les 461 réellement testables (12,1%, pas 714 — `total_liabilities` ne couvre que 64,6% de l'échantillon) hors tolérance de 1% sur l'identité Actif = Passif + Capitaux propres, notamment pour des entreprises ayant porté des capitaux propres temporaires (mezzanine equity) avant introduction en bourse (cas MRNA 2017 documenté en détail).
 - **Capitalisation boursière approximée**, pas un nombre d'actions point-in-time exact — les multiples de `v_valuation` sont indicatifs.
 - **Portée annuelle uniquement** : le détail trimestriel n'est pas chargé, limitant la granularité de la fenêtre "TTM" utilisée pour les financials des cibles M&A (approximée par le dernier exercice annuel complet avant l'annonce).
-- **Qualité Yahoo Finance** : source non officielle, jamais utilisée pour les états financiers eux-mêmes, documentée comme telle conformément à la charte.
+- **Qualité Yahoo Finance** : source non officielle, jamais utilisée pour les états financiers eux-mêmes.
 
 ## 10. Conclusion
 
-Le pipeline démontre qu'un système de screening d'investissement méthodologiquement rigoureux — traçable jusqu'à la donnée source, avec des seuils explicites et un moteur générique — peut être construit entièrement à partir de données publiques gratuites. Les résultats produits sont vérifiables à trois niveaux : par calcul manuel indépendant (vues de ratios, section 6 de la charte), par recoupement avec une source primaire externe (prime M&A Amgen/Horizon), et par plausibilité économique qualitative (composition des profils de screening). Les limitations documentées (échantillon M&A restreint, biais de survivance, cohérence comptable imparfaite) sont des contraintes de données publiques gratuites, pas des lacunes méthodologiques masquées.
+Le pipeline construit un système de screening d'investissement traçable jusqu'à la donnée source, avec des seuils explicites et un moteur générique, entièrement à partir de données publiques gratuites. Les résultats sont vérifiables à trois niveaux : par calcul manuel indépendant (vues de ratios), par recoupement avec une source primaire externe (prime M&A Amgen/Horizon), et par plausibilité économique qualitative (composition des profils de screening). Les limitations documentées (échantillon M&A restreint, biais de survivance, cohérence comptable imparfaite) sont des contraintes de données publiques gratuites, pas des lacunes méthodologiques.
 
 ## 11. References
 

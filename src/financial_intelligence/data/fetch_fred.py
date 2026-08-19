@@ -1,5 +1,5 @@
 """Fetcher FRED — télécharge les séries macro brutes utilisées pour contextualiser
-les cycles de deals (docs/00_project_charter.md, section 6).
+les cycles de deals.
 
 Sauvegarde le JSON brut de l'API FRED tel quel, sans transformation.
 

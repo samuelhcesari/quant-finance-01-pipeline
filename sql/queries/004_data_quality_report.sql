@@ -1,12 +1,8 @@
--- Rapport de qualité de données consolidé — répond à un retour de relecture
--- externe : coverage/missingness/accounting identities/outliers étaient
--- documentés en texte libre dans docs/data_sources.md, jamais interrogeables
--- directement en SQL. S'appuie sur v_data_quality_flags
--- (sql/views/013_...sql) pour les identités comptables et les outliers.
+-- Rapport de qualité de données : fill rate, identités comptables, outliers,
+-- doublons. S'appuie sur v_data_quality_flags (sql/views/013_...sql).
 
 -- 1. Taux de remplissage par champ, par table (pas de PIVOT dynamique en SQL
--- standard -> UNION ALL explicite, un SELECT par champ, volontairement
--- verbeux plutôt que magique).
+-- standard -> UNION ALL explicite).
 SELECT 'income_statements' AS table_name, 'revenue' AS field, COUNT(revenue) AS filled, COUNT(*) AS total, ROUND(100.0*COUNT(revenue)/COUNT(*),1) AS pct FROM income_statements
 UNION ALL SELECT 'income_statements', 'ebit', COUNT(ebit), COUNT(*), ROUND(100.0*COUNT(ebit)/COUNT(*),1) FROM income_statements
 UNION ALL SELECT 'income_statements', 'ebitda', COUNT(ebitda), COUNT(*), ROUND(100.0*COUNT(ebitda)/COUNT(*),1) FROM income_statements
@@ -38,19 +34,12 @@ SELECT
     COUNT(*) AS total_rows
 FROM v_data_quality_flags;
 
--- 4. Doublons (company_id, fiscal_year) — doit toujours renvoyer 0 lignes,
--- la contrainte UNIQUE de fiscal_periods l'empêche déjà en base ; cette
--- requête sert de preuve indépendante, pas de garde-fou (le garde-fou, c'est
--- la contrainte SQL elle-même).
+-- 4. Doublons (company_id, fiscal_year) — doit renvoyer 0 lignes (déjà
+-- empêché par la contrainte UNIQUE de fiscal_periods).
 SELECT company_id, fiscal_year, COUNT(*)
 FROM fiscal_periods
 GROUP BY company_id, fiscal_year
 HAVING COUNT(*) > 1;
 
--- 5. Restatements/révisions de filings : HORS PÉRIMÈTRE, non traité (choix
--- documenté dans docs/01_data_model.md section 5 dès la conception du
--- schéma) — le loader retient systématiquement le filing le plus ancien par
--- exercice (cf. docs/data_sources.md section 6), donc les chiffres "as
--- originally reported" sont préférés à une éventuelle version corrigée
--- ultérieure. Pas une lacune de cette requête, une décision de scope prise
--- en amont.
+-- 5. Restatements/révisions de filings : hors périmètre. Le loader retient
+-- le filing le plus ancien par exercice ("as originally reported").

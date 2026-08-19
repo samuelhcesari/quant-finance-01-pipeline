@@ -1,22 +1,12 @@
--- macro_indicators (17 792 observations FRED chargées à l'étape 2) n'était
--- utilisée nulle part jusqu'ici. Ces deux requêtes répondent à la question de
--- la charte (section 2) sur la dynamique des deals "par cycle" : le contexte
--- de crédit au moment de chaque transaction, et si les multiples de
--- valorisation de l'univers réagissent au spread de crédit high-yield.
+-- Contexte de crédit au moment des transactions M&A, et corrélation entre
+-- multiples et spread high-yield.
 --
--- LIMITATION DE DONNÉES CONSTATÉE EN EXÉCUTANT CETTE REQUÊTE : la série
--- BAMLH0A0HYM2 (spread crédit high-yield) telle que récupérée par
--- fetch_fred.py ne couvre que 2023-08-21 → aujourd'hui (786 observations),
--- pas tout l'historique disponible sur FRED pour cette série. Conséquence :
--- le spread HY est NULL pour les transactions Horizon Therapeutics
--- (2022-12-12) et Seagen (2023-03-13), antérieures à cette fenêtre — pas une
--- erreur de jointure, une vraie limite de couverture, documentée ici et dans
--- docs/data_sources.md plutôt que masquée.
+-- BAMLH0A0HYM2 (spread crédit high-yield) ne couvre que 2023-08-21 ->
+-- aujourd'hui dans les données récupérées (786 observations), pas tout
+-- l'historique FRED. Le spread HY est donc NULL pour Horizon Therapeutics
+-- (2022-12-12) et Seagen (2023-03-13), antérieures à cette fenêtre.
 
--- 1. Contexte macro à la date d'annonce de chaque transaction M&A (dernière
--- observation disponible à la date d'annonce ou avant — même logique
--- "dernier prix connu, jamais futur" que v_valuation, pour éviter tout biais
--- de look-ahead).
+-- 1. Contexte macro à la date d'annonce (dernière observation <= announce_date).
 WITH macro_at_announce AS (
     SELECT DISTINCT ON (tx.transaction_id, mi.series_code)
         tx.transaction_id, mi.series_code, mi.value, mi.obs_date

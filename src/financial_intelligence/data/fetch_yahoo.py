@@ -1,7 +1,6 @@
 """Fetcher Yahoo Finance — télécharge l'historique de prix/volume brut pour
-l'univers d'entreprises via `yfinance` (docs/00_project_charter.md, section 6 :
-source non officielle, fiabilité variable, jamais présentée comme référence
-réglementaire).
+l'univers d'entreprises via `yfinance`. Source non officielle, fiabilité
+variable (cf. docs/data_sources.md).
 
 Sauvegarde un CSV brut par ticker (OHLCV + Adj Close), sans transformation.
 

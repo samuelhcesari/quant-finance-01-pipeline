@@ -1,8 +1,6 @@
 """Tests SQL des vues de ratios contre une entreprise fictive dont les
-résultats attendus sont calculés à la main (charte section 10 : "une
-entreprise fictive avec Revenue, EBITDA, Debt connus -> vérifier que
-v_leverage_ratios renvoie exactement la valeur attendue"). Base éphémère
-(tests/conftest.py), transaction annulée après chaque test.
+résultats attendus sont calculés à la main. Base éphémère (tests/conftest.py),
+transaction annulée après chaque test.
 
 Données synthétiques (2 exercices consécutifs, "Fictive Corp") :
 

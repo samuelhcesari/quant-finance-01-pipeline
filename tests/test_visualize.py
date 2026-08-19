@@ -1,6 +1,5 @@
-"""Test de _clean_numeric (sql/analytics/visualize.py) : NULL SQL, +/-inf et
-valeurs non numériques doivent tous devenir NaN pandas, jamais une valeur
-inventée à la place (ex. 0)."""
+"""Test de _clean_numeric : NULL SQL, +/-inf et valeurs non numériques doivent
+tous devenir NaN pandas."""
 
 from __future__ import annotations
 

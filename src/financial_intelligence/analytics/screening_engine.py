@@ -1,21 +1,10 @@
-"""Moteur de screening PE générique (docs/00_project_charter.md, section 4 :
-"seuils paramétrables via configuration externe (YAML), pas en dur dans le
-SQL").
+"""Moteur de screening PE générique : lit les règles de chaque profil dans
+configs/screening/*.yaml, les évalue contre v_screening_base, journalise dans
+screening_results (config_hash + run_date).
 
-Ce module ne contient AUCUN seuil métier codé en dur : il lit les règles de
-chaque profil dans configs/screening/*.yaml, les évalue contre les lignes de
-la vue SQL `v_screening_base` (qui, elle, contient toute la logique de calcul
-financier — ratios, moyennes mobiles, valorisation), et journalise chaque
-exécution dans `screening_results` pour audit (config_hash + run_date).
-
-Sémantique d'une règle {metric, operator, threshold, allow_null} :
-- Si la métrique est NULL pour la ligne évaluée :
-    - allow_null=true  -> règle considérée satisfaite (donnée non bloquante,
-      ex. valorisation absente pour les exercices hors couverture Yahoo Finance)
-    - allow_null=false -> règle considérée NON satisfaite (donnée manquante
-      traitée comme un échec explicite, pas comme un succès par défaut —
-      cohérent avec le principe "ne jamais inventer un résultat")
-- Sinon : comparaison metric OPERATOR threshold.
+Règle = {metric, operator, threshold, allow_null}. Si metric est NULL :
+allow_null=true -> règle satisfaite ; allow_null=false -> règle non satisfaite.
+Sinon : comparaison metric OPERATOR threshold.
 
 passed = (fraction de règles satisfaites) >= min_score du profil.
 

@@ -1,10 +1,5 @@
--- v_margins — marges de rentabilité (docs/00_project_charter.md, section 5) :
--- Gross margin, EBITDA margin, EBIT margin, Net margin = X / Revenue.
---
--- NULLIF(revenue, 0) évite la division par zéro. Une marge calculée sur un
--- revenue négatif (rare mais possible pour certaines lignes ajustées) reste
--- affichée telle quelle plutôt que masquée : c'est au lecteur de la vue de
--- juger sa pertinence pour le cas particulier, pas à la vue de la cacher.
+-- v_margins — Gross/EBITDA/EBIT/Net margin = X / Revenue. NULLIF(revenue, 0)
+-- évite la division par zéro ; un revenue négatif n'est pas filtré.
 
 CREATE VIEW v_margins AS
 SELECT

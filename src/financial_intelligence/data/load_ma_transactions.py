@@ -1,19 +1,10 @@
-"""Charge un échantillon restreint et entièrement traçable de transactions M&A
-réelles (docs/00_project_charter.md, section 6 : "Aucune base de deals M&A
-propriétaire... À défaut, construction d'un jeu de transactions à partir
-d'annonces publiques... échantillon volontairement restreint et entièrement
-traçable"). Chaque transaction ci-dessous a été vérifiée directement sur la
-source SEC primaire citée en `source_url` (récupérée via curl avec le
-User-Agent SEC requis, pas via un résumé secondaire) avant d'être saisie ici.
+"""Charge un échantillon de transactions M&A réelles, sourcées individuellement
+(source_url = 8-K/press release SEC par transaction).
 
-Financials des cibles (transaction_financials) : réutilisent le même fetcher/
-normalizer SEC EDGAR que les 43 entreprises de l'univers principal (mêmes
-tags US-GAAP, même logique de sélection de période) — voir
-data/raw/sec_edgar_ma_targets/*.json pour le JSON brut téléchargé pour ces
-5 cibles. `target_revenue_ttm`/`target_ebitda_ttm` utilisent le dernier
-exercice ANNUEL COMPLET clôturé avant l'annonce (pas un vrai TTM glissant,
-qui exigerait des données trimestrielles non chargées à ce stade) —
-approximation documentée, pas une donnée inventée.
+Financials des cibles : même fetcher/normalizer SEC EDGAR que l'univers
+principal — voir data/raw/sec_edgar_ma_targets/*.json. target_revenue_ttm/
+target_ebitda_ttm = dernier exercice annuel clôturé avant l'annonce (pas un
+TTM glissant, données trimestrielles non chargées).
 
 Usage : python -m financial_intelligence.data.load_ma_transactions
 """

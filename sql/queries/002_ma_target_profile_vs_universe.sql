@@ -1,13 +1,6 @@
--- Répond à une autre question de la charte (section 2), jamais testée
--- jusqu'ici : "quel profil d'entreprise (croissance, marge, levier) est
--- associé à un statut de cible M&A dans l'échantillon ?"
---
--- N=4 cibles avec financials disponibles (Splunk et Lhoist North America
--- exclues, cf. docs/data_sources.md) : ce n'est PAS un échantillon
--- statistiquement puissant, aucune conclusion causale n'en est tirée. La
--- requête calcule où chaque cible se situe dans la distribution de son
--- secteur au moment de l'annonce (percentile de marge, de levier), à titre
--- illustratif — présenté comme tel, pas comme un test d'hypothèse.
+-- Profil financier des cibles M&A vs le reste de l'univers, par percentile
+-- sectoriel. N=4 cibles avec financials disponibles (Splunk et Lhoist North
+-- America exclues) — échantillon illustratif, pas un test statistique.
 
 WITH target_ratios AS (
     SELECT

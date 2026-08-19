@@ -1,23 +1,9 @@
--- v_valuation — multiples de valorisation (docs/00_project_charter.md, section 5) :
--- EV = Market Cap + Total Debt - Cash, puis EV/EBITDA, EV/Revenue, EV/EBIT,
--- P/E, P/B, FCF Yield = FCF / Market Cap.
---
--- LIMITATION DE DONNÉES EXPLICITE (cf. docs/data_sources.md section 6) :
--- market_prices ne contient PAS de nombre d'actions en circulation
--- point-in-time (yfinance ne fournit qu'un snapshot actuel, pas un historique
--- fiable). Cette vue approxime donc la capitalisation boursière par
--- close_price x shares_diluted (moyenne pondérée diluée de l'EXERCICE, pas le
--- nombre d'actions à la date de clôture précise) — une approximation standard
--- en l'absence de mieux, mais PAS un market cap exact. Toute valeur dérivée
--- (EV, EV/EBITDA, P/B, FCF Yield...) hérite de cette approximation, à traiter
--- comme indicative, pas comme une référence de marché précise.
---
--- Cours retenu : le dernier close_price disponible à la date de clôture de
--- l'exercice ou avant (DISTINCT ON ... ORDER BY price_date DESC). Comme
--- market_prices ne couvre que les 5 dernières années (fetch_yahoo.py, period
--- 5y), cette vue ne renvoie des valeurs que pour les exercices récents ayant
--- un prix de marché disponible — NULL pour les exercices plus anciens, ce qui
--- est attendu, pas un bug.
+-- v_valuation — EV = Market Cap + Total Debt - Cash, puis EV/EBITDA,
+-- EV/Revenue, EV/EBIT, P/E, P/B, FCF Yield.
+-- Market cap approximée par close_price x shares_diluted (pas de shares
+-- outstanding point-in-time dans les données Yahoo Finance).
+-- Cours = dernier close_price <= date de clôture (DISTINCT ON). market_prices
+-- ne couvre que ~5 ans -> NULL pour les exercices plus anciens.
 
 CREATE VIEW v_valuation AS
 WITH price_at_period AS (

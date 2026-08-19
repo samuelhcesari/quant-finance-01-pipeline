@@ -1,19 +1,8 @@
--- v_screening_base — regroupe toutes les métriques nécessaires au moteur de
--- screening (étape 6) en une seule vue : profil financier de base (étape 4/5),
--- tendances 3 ans (v_trailing_trends) et multiples de valorisation
--- (v_valuation, disponibles seulement sur les ~5 dernières années — cf.
--- limitation documentée dans docs/data_sources.md). LEFT JOIN volontaire :
--- l'absence de valorisation ne doit pas faire disparaître une ligne du
--- screening, seulement laisser ses colonnes de valorisation à NULL.
---
--- Les SEUILS de screening ne sont PAS dans cette vue (charte section 4 :
--- "seuils paramétrables via configuration externe (YAML), pas en dur dans le
--- SQL") — cette vue ne fait que mettre les métriques à disposition ; les
--- seuils vivent dans configs/screening/*.yaml et sont appliqués par
--- src/financial_intelligence/screening/engine.py.
---
--- Source de `p` : mv_company_financial_profile (vue matérialisée) depuis
--- l'étape d'optimisation (sql/optimization/001_...sql).
+-- v_screening_base — regroupe profil financier, tendances 3 ans et
+-- valorisation (v_valuation, ~5 dernières années). LEFT JOIN sur la
+-- valorisation pour ne pas perdre la ligne quand elle est absente.
+-- Aucun seuil ici : configs/screening/*.yaml + screening_engine.py.
+-- Source de `p` : mv_company_financial_profile.
 
 CREATE OR REPLACE VIEW v_screening_base AS
 SELECT

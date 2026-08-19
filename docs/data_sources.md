@@ -1,13 +1,13 @@
 # Data Sources
 
-Documentation des sources de données utilisées, conformément à `docs/00_project_charter.md` section 6. Chaque exécution réelle des fetchers est journalisée ci-dessous avec sa date, son résultat exact, et les biais connus. Aucune donnée de ce projet n'est inventée.
+Documentation des sources de données utilisées. Chaque exécution des fetchers est journalisée ci-dessous avec sa date, son résultat exact, et les biais connus.
 
 ## 1. SEC EDGAR — Company Facts API (XBRL)
 
 - **URL** : `https://data.sec.gov/api/xbrl/companyfacts/CIK{10 chiffres}.json`
 - **Mapping ticker → CIK** : `https://www.sec.gov/files/company_tickers.json`
 - **Fetcher** : [`src/financial_intelligence/data/fetch_sec_edgar.py`](../src/financial_intelligence/data/fetch_sec_edgar.py)
-- **Authentification** : aucune clé requise. Header `User-Agent` obligatoire déclarant un contact réel (format `nom-du-projet contact@example.com`, défini via `SEC_USER_AGENT` dans `.env`, jamais commité), conformément à la politique d'accès équitable de la SEC.
+- **Authentification** : aucune clé requise. Header `User-Agent` obligatoire déclarant un contact réel (format `nom-du-projet contact@example.com`, défini via `SEC_USER_AGENT` dans `.env`, jamais commité) — requis par la politique d'accès équitable de la SEC.
 - **Contenu** : états financiers US GAAP normalisés issus des 10-K/10-Q, tous les concepts `us-gaap` disponibles par entreprise (pas de filtrage à la source — le filtrage vers les champs utiles se fera à l'étape de normalisation/chargement, étape 3 du roadmap).
 - **Unités** : telles que rapportées par l'entreprise (généralement USD, non ajustées à une échelle commune).
 - **Transformations appliquées à la collecte** : aucune. JSON brut sauvegardé tel quel dans `data/raw/sec_edgar/{ticker}.json`.
@@ -19,7 +19,7 @@ Documentation des sources de données utilisées, conformément à `docs/00_proj
 - **URL** : `https://api.stlouisfed.org/fred/series/observations`
 - **Fetcher** : [`src/financial_intelligence/data/fetch_fred.py`](../src/financial_intelligence/data/fetch_fred.py)
 - **Authentification** : clé API gratuite (`FRED_API_KEY` dans `.env`, jamais commitée — voir `.gitignore` et `.env.example`).
-- **Séries retenues** (choisies pour contextualiser les cycles M&A/LBO, cf. charte section 6) :
+- **Séries retenues** (choisies pour contextualiser les cycles M&A/LBO) :
   | Série | Description | Usage |
   |---|---|---|
   | `DGS10` | 10-Year Treasury Constant Maturity Rate | taux sans risque |
@@ -37,7 +37,7 @@ Documentation des sources de données utilisées, conformément à `docs/00_proj
 - **Contenu** : historique OHLCV + Adj Close, période `5y` (2021-08-19 → 2026-08-19 au moment de l'exécution), fréquence journalière.
 - **Transformations appliquées à la collecte** : aucune. CSV brut sauvegardé dans `data/raw/yahoo/{ticker}.csv`.
 - **Exécution réelle** : 2026-08-19, 43/43 tickers récupérés (0 échec). ~1252–1255 lignes par ticker selon les jours de cotation effectifs sur la période. Volume total : 6,9 Mo.
-- **Biais connus** (explicitement rappelés par la charte, section 6) : source non officielle, fiabilité variable, ne doit jamais être présentée comme référence réglementaire — utilisée uniquement pour les prix de marché et le calcul de capitalisation/EV, jamais pour les états financiers (ceux-ci viennent exclusivement de SEC EDGAR).
+- **Biais connus** : source non officielle, fiabilité variable, jamais présentée comme référence réglementaire — utilisée uniquement pour les prix de marché et le calcul de capitalisation/EV, jamais pour les états financiers (ceux-ci viennent exclusivement de SEC EDGAR).
 
 ## 4. Univers d'entreprises
 
@@ -47,7 +47,7 @@ Documentation des sources de données utilisées, conformément à `docs/00_proj
 
 ## 5. Transactions M&A (étape 7 du roadmap)
 
-Conformément à la charte (section 6), aucune base de deals M&A propriétaire n'étant accessible gratuitement, 5 transactions réelles ont été construites manuellement à partir d'annonces publiques SEC, chacune vérifiée directement sur la source primaire (récupérée via `curl` avec le `User-Agent` SEC requis — jamais un résumé secondaire pris pour argent comptant) avant saisie dans [`load_ma_transactions.py`](../src/financial_intelligence/data/load_ma_transactions.py). Chargé le 2026-08-19, idempotence vérifiée par double exécution (5 transactions, 4 `transaction_financials`, décomptes stables).
+Aucune base de deals M&A propriétaire n'étant accessible gratuitement, 5 transactions réelles ont été construites manuellement à partir d'annonces publiques SEC, chacune vérifiée directement sur la source primaire (récupérée via `curl` avec le `User-Agent` SEC requis) avant saisie dans [`load_ma_transactions.py`](../src/financial_intelligence/data/load_ma_transactions.py). Chargé le 2026-08-19, idempotence vérifiée par double exécution (5 transactions, 4 `transaction_financials`, décomptes stables).
 
 | Acquéreur | Cible | Annonce | Prix/action | Valeur | Source |
 |---|---|---|---|---|---|

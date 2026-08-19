@@ -2,7 +2,7 @@
 data/processed/macro_indicators.csv (series_code, obs_date, value).
 
 FRED encode les observations manquantes avec la valeur littérale "." — ces
-lignes sont ignorées (pas insérées comme 0, ce qui serait une donnée inventée).
+lignes sont ignorées plutôt qu'insérées comme 0.
 
 Usage : python -m financial_intelligence.data.normalize_fred
 """

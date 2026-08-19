@@ -1,24 +1,9 @@
--- v_returns — rentabilité du capital (docs/00_project_charter.md, section 5) :
--- ROE = Net Income / Avg Shareholders Equity
--- ROA = Net Income / Avg Total Assets
--- ROIC = NOPAT / Invested Capital, avec NOPAT = EBIT x (1 - taux d'imposition
--- effectif) et Invested Capital = Total Debt + Equity - Cash.
---
--- "Avg" (moyenne début/fin d'exercice) nécessite le bilan de l'exercice
--- précédent -> LAG() sur total_equity/total_assets, exercice réellement
--- consécutif exigé (comme v_growth) sinon la moyenne serait calculée sur des
--- bilans non adjacents. Si l'exercice précédent n'existe pas ou n'est pas
--- consécutif, on utilise le solde de fin d'exercice seul (moyenne dégradée)
--- plutôt que de renvoyer NULL, ce qui priverait tout le premier exercice
--- disponible de toute mesure de rentabilité.
---
--- Total Debt = short_term_debt + long_term_debt : NULL si les DEUX composantes
--- sont NULL (dette réellement inconnue), sinon somme des composantes connues
--- (traite l'absence de l'une des deux comme 0, pas comme un blocage total).
---
--- Taux d'imposition effectif = tax_expense / pretax_income, NULL si
--- pretax_income <= 0 (un taux d'imposition sur une perte avant impôt n'a pas
--- de sens économique standard).
+-- v_returns — ROE = Net Income / Avg Equity, ROA = Net Income / Avg Assets,
+-- ROIC = NOPAT / Invested Capital (NOPAT = EBIT x (1 - taux d'imposition
+-- effectif), Invested Capital = Total Debt + Equity - Cash).
+-- Avg = moyenne début/fin sur exercices consécutifs (LAG), sinon solde de fin
+-- seul. Total Debt NULL seulement si st_debt et lt_debt sont NULL tous deux.
+-- effective_tax_rate NULL si pretax_income <= 0.
 
 CREATE VIEW v_returns AS
 WITH base AS (

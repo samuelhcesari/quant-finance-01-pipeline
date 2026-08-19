@@ -2,7 +2,7 @@
 
 **Statut :** Schéma conçu, DDL écrit (`sql/schema/001_init.sql`), **non encore appliqué ni vérifié** (bloqué par l'absence de Docker sur la machine de développement au moment de la rédaction — voir `PORTFOLIO_PROGRESS.md`).
 
-Ce document justifie les choix de modélisation avant toute implémentation, conformément à la règle du cahier des charges : aucune ligne de DDL n'est écrite sans que sa raison d'être soit documentée ici.
+Ce document justifie les choix de modélisation avant l'écriture du DDL.
 
 ---
 
