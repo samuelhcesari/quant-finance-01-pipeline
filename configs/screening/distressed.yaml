@@ -1,0 +1,28 @@
+# Profil "Distressed" — cible des entreprises sous tension financière
+# (candidats potentiels au retournement ou à la dette décotée) : levier très
+# élevé ET chiffre d'affaires en déclin. interest_coverage est une règle
+# informative additionnelle, volontairement optionnelle (allow_null) car
+# interest_expense est absent dans ~28% des exercices (docs/data_sources.md) —
+# l'exiger aurait exclu à tort une partie réelle des candidats distressed.
+code: distressed
+name: "Distressed"
+description: >
+  Levier très élevé (Net Debt/EBITDA >= 5x) combiné à un chiffre d'affaires en
+  déclin (croissance < 0%) — signal de tension financière. Couverture des
+  intérêts faible (<=2x) prise en compte quand disponible, sans exclure les
+  candidats pour lesquels cette donnée manque.
+version: "1.0"
+min_score: 1.0
+rules:
+  - metric: net_debt_to_ebitda
+    operator: ">="
+    threshold: 5.0
+    allow_null: false
+  - metric: revenue_growth
+    operator: "<"
+    threshold: 0.0
+    allow_null: false
+  - metric: interest_coverage
+    operator: "<="
+    threshold: 2.0
+    allow_null: true

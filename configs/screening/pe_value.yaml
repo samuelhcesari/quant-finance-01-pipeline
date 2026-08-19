@@ -1,0 +1,34 @@
+# Profil "PE Value" — cible des entreprises matures, à croissance modérée,
+# fortement génératrices de cash, à levier maîtrisé et valorisées
+# raisonnablement quand la donnée de marché est disponible.
+code: pe_value
+name: "PE Value"
+description: >
+  Croissance modérée (0% à 10% par an, ni déclin ni hyper-croissance), forte
+  génération de cash (FCF margin >=8%), levier maîtrisé (Net Debt/EBITDA <=
+  3x), valorisation raisonnable quand disponible (EV/EBITDA <= 12x — règle
+  ignorée si non calculable, cf. limitation valorisation dans
+  docs/data_sources.md : couverture marché limitée aux ~5 dernières années).
+version: "1.0"
+min_score: 1.0
+rules:
+  - metric: revenue_growth
+    operator: ">="
+    threshold: 0.0
+    allow_null: false
+  - metric: revenue_growth
+    operator: "<="
+    threshold: 0.10
+    allow_null: false
+  - metric: fcf_margin
+    operator: ">="
+    threshold: 0.08
+    allow_null: false
+  - metric: net_debt_to_ebitda
+    operator: "<="
+    threshold: 3.0
+    allow_null: false
+  - metric: ev_to_ebitda
+    operator: "<="
+    threshold: 12.0
+    allow_null: true

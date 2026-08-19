@@ -1,0 +1,61 @@
+# Échantillon de départ — 3 secteurs contrastés (charte docs/00_project_charter.md, section 6 et 9).
+# Source du choix des tickers : sélection manuelle de grandes capitalisations et mid-caps US
+# cotées, publiquement connues comme appartenant à ces secteurs — pas une source de données
+# externe. Le mapping ticker -> CIK est résolu par le fetcher SEC EDGAR lui-même
+# (https://www.sec.gov/files/company_tickers.json), jamais codé en dur ici.
+
+sectors:
+  pharma:
+    label: "Pharmaceutique / Biotech"
+    tickers:
+      - PFE
+      - JNJ
+      - MRK
+      - LLY
+      - ABBV
+      - BMY
+      - AMGN
+      - GILD
+      - REGN
+      - VRTX
+      - MRNA
+      - BIIB
+      - ZTS
+      - VTRS
+
+  tech:
+    label: "Technologie"
+    tickers:
+      - AAPL
+      - MSFT
+      - GOOGL
+      - AMZN
+      - META
+      - NVDA
+      - CRM
+      - ADBE
+      - ORCL
+      - CSCO
+      - IBM
+      - INTC
+      - TXN
+      - NOW
+      - PANW
+
+  construction:
+    label: "Construction / Matériaux / E&C"
+    tickers:
+      - CAT
+      - VMC
+      - MLM
+      - DHI
+      - LEN
+      - PHM
+      - FLR
+      - J
+      - PWR
+      - ACM
+      - MAS
+      - BLDR
+      - SHW
+      - EXP

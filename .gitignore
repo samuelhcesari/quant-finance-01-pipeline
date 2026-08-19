@@ -1,0 +1,30 @@
+# Data (never commit raw/processed financial data — reproducible via pipeline instead)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Env / secrets
+.env
+*.local
+
+# Results (generated, not source) — sauf results/figures/*.png : ces graphiques
+# sont commités volontairement pour être visibles directement sur GitHub sans
+# avoir à exécuter le pipeline (cf. src/financial_intelligence/analytics/visualize.py).
+results/*
+!results/.gitkeep
+!results/figures/
+!results/figures/*.png
+
+# OS
+.DS_Store

@@ -1,0 +1,33 @@
+# Profil "Quality" — cible des entreprises à rentabilité du capital élevée et
+# DURABLE (moyenne 3 ans, pas un pic ponctuel), marges solides sur le cycle,
+# levier faible, croissance non déclinante sur la période.
+code: quality
+name: "Quality"
+description: >
+  ROIC élevé (>=15%), marge EBITDA moyenne sur 3 ans élevée (>=20%) ET
+  effectivement calculée sur 3 exercices complets (pas une approximation sur 1
+  ou 2 ans), levier faible (Net Debt/EBITDA <= 2x), croissance non déclinante
+  sur 3 ans (moyenne >= 0%).
+version: "1.0"
+min_score: 1.0
+rules:
+  - metric: roic
+    operator: ">="
+    threshold: 0.15
+    allow_null: false
+  - metric: years_available_for_avg
+    operator: "=="
+    threshold: 3
+    allow_null: false
+  - metric: ebitda_margin_3y_avg
+    operator: ">="
+    threshold: 0.20
+    allow_null: false
+  - metric: net_debt_to_ebitda
+    operator: "<="
+    threshold: 2.0
+    allow_null: false
+  - metric: revenue_growth_3y_avg
+    operator: ">="
+    threshold: 0.0
+    allow_null: false

@@ -1,0 +1,29 @@
+# Profil "PE Growth" — cible des entreprises à forte croissance, tolère une
+# rentabilité encore modeste, exige une croissance suffisamment vigoureuse et
+# un levier maîtrisé pour rester finançable.
+code: pe_growth
+name: "PE Growth"
+description: >
+  Croissance du chiffre d'affaires élevée (>=15% par an), rentabilité EBITDA
+  minimale (>=10%, pas de tolérance pour le cash-burn pur), levier maîtrisé
+  (Net Debt/EBITDA <= 4x), ROIC positif (>=5%, le capital investi génère un
+  minimum de rendement).
+version: "1.0"
+min_score: 1.0  # toutes les règles doivent être satisfaites
+rules:
+  - metric: revenue_growth
+    operator: ">="
+    threshold: 0.15
+    allow_null: false
+  - metric: ebitda_margin
+    operator: ">="
+    threshold: 0.10
+    allow_null: false
+  - metric: net_debt_to_ebitda
+    operator: "<="
+    threshold: 4.0
+    allow_null: false
+  - metric: roic
+    operator: ">="
+    threshold: 0.05
+    allow_null: false
