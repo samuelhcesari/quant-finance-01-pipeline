@@ -22,7 +22,6 @@ venv/
 # sont commités volontairement pour être visibles directement sur GitHub sans
 # avoir à exécuter le pipeline (cf. src/financial_intelligence/analytics/visualize.py).
 results/*
-!results/.gitkeep
 !results/figures/
 !results/figures/*.png
 
