@@ -36,7 +36,7 @@ Les concepts mobilisés (marges, ROIC, leverage, FCF, multiples de valorisation,
 
 ## 5. Methodology
 
-Pipeline : fetchers Python (données brutes, jamais modifiées) → normalizers (mapping de tags XBRL vers colonnes, cf. `xbrl_concepts.py`) → loaders idempotents PostgreSQL → 12 vues SQL analytiques (window functions, CTE imbriquées) → moteur de screening générique piloté par YAML.
+Pipeline : fetchers Python (données brutes, jamais modifiées) → normalizers (mapping de tags XBRL vers colonnes, cf. `xbrl_concepts.py`) → loaders idempotents PostgreSQL → 13 vues SQL analytiques (window functions, CTE imbriquées) → moteur de screening générique piloté par YAML.
 
 **Choix méthodologiques documentés** :
 - `fiscal_year` dérivé de la date de clôture d'exercice, pas du tag `fy` de SEC EDGAR (peu fiable pour les périodes comparatives, cf. `docs/data_sources.md` section 6).
