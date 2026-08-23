@@ -2,7 +2,8 @@
 # (candidats potentiels au retournement ou à la dette décotée) : levier très
 # élevé ET chiffre d'affaires en déclin. interest_coverage est une règle
 # informative additionnelle, volontairement optionnelle (allow_null) car
-# interest_expense est absent dans ~28% des exercices (docs/data_sources.md) —
+# interest_expense est absent dans ~22% des exercices (714 lignes de
+# data/processed/financials_annual.csv, 154 valeurs manquantes) —
 # l'exiger aurait exclu à tort une partie réelle des candidats distressed.
 code: distressed
 name: "Distressed"
