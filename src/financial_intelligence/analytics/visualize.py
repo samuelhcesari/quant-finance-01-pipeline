@@ -47,9 +47,8 @@ def _fetch_df(conn: psycopg.Connection, sql: str) -> pd.DataFrame:
 
 def _clean_numeric(series: pd.Series) -> pd.Series:
     """NULL SQL -> NaN pandas (déjà le cas via psycopg), +/-inf -> NaN (peut
-    arriver sur un ratio dont le dénominateur est proche de 0), puis les NaN
-    sont retirés par l'appelant (dropna) avant tout calcul agrégé — jamais une
-    valeur inventée à la place d'une donnée manquante."""
+    arriver sur un ratio dont le dénominateur est proche de 0). Les NaN sont
+    retirés par l'appelant (dropna) avant tout calcul agrégé."""
     s = pd.to_numeric(series, errors="coerce")
     return s.replace([np.inf, -np.inf], np.nan)
 
